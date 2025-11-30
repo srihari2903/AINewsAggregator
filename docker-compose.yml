@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Service 1: Our Python App
+  app:
+    build: .
+    container_name: ai_news_app
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/newsdb
+    volumes:
+      - .:/app  # Live reload: changes on your Mac show up in container
+    ports:
+      - "8000:8000"
+
+  # Service 2: PostgreSQL Database
+  db:
+    image: postgres:15
+    container_name: ai_news_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: newsdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
