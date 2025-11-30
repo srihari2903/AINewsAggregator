@@ -1,0 +1,18 @@
+# Web Framework
+fastapi
+uvicorn
+jinja2
+
+# HTTP & Scraping
+requests
+beautifulsoup4
+
+# Database
+sqlalchemy
+
+# LLM
+google-generativeai
+python-dotenv
+
+# Scheduling
+apscheduler
