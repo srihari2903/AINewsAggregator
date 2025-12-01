@@ -1,6 +1,17 @@
 from fastapi import FastAPI
+from app.services.scheduler import SchedulerService
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="AI News Aggregator")
+# Use lifespan events to start/stop the scheduler
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    scheduler = SchedulerService()
+    scheduler.start()
+    yield
+    # Shutdown (optional cleanup)
+
+app = FastAPI(title="AI News Aggregator", lifespan=lifespan)
 
 @app.get("/")
 def read_root():
@@ -9,4 +20,5 @@ def read_root():
 if __name__ == "__main__":
     import uvicorn
     # Run the app on localhost:8000
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
